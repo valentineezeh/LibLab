@@ -33,6 +33,7 @@ export default function Characters() {
   const cells = ['Name', 'Gender', 'Race', 'Height', 'Birth', 'Spouse', 'Death', 'Realm', 'Hair']
   const [ characters, setCharacters ] = useState<Props>();
   const [loading, setLoading] = useState(true);
+  const [ error, setError ] = useState(false)
 
   useEffect(() => {
     const fetchCharactersHandler = async () => {
@@ -43,9 +44,11 @@ export default function Characters() {
           }
         })
         setCharacters(data)
+        setError(false)
         setLoading(false)
       } catch (error) {
         setLoading(false)
+        setError(true)
         return error
       }
     }
@@ -61,6 +64,10 @@ export default function Characters() {
       {
         loading ? (
           <Loader loading={loading} />
+        ) : error ? (
+          <h4>
+            Oops! Something went wrong, please try again.
+          </h4>
         ) : (
       <BaseTable cells={cells}>
         {

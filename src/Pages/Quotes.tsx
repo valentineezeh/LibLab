@@ -27,6 +27,7 @@ export default function Quotes() {
   const cells = ['Dialog', 'Movie', 'Character']
   const [ quotes, setQuotes ] = useState<Props>();
   const [loading, setLoading] = useState(true);
+  const [ error, setError ] = useState(false)
 
   useEffect(() => {
     const fetchQuotesHandler = async () => {
@@ -37,9 +38,11 @@ export default function Quotes() {
           }
         })
         setQuotes(data)
+        setError(false)
         setLoading(false)
       } catch (error) {
         setLoading(false)
+        setError(true)
         return error
       }
     }
@@ -55,6 +58,10 @@ export default function Quotes() {
       {
         loading ? (
           <Loader loading={loading} />
+        ) : error ? (
+          <h4>
+            Oops! Something went wrong, please try again.
+          </h4>
         ) : (
       <BaseTable cells={cells}>
         {
